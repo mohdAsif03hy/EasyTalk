@@ -33,15 +33,10 @@ app.use("/api/chat", chatRoutes);
 // ✅ Production Setup
 if (process.env.NODE_ENV === "production") {
 
-  // 👇 Google verification FIRST
-  app.get("/google645d416ebe2aa1bf.html", (req, res) => {
-    res.sendFile(path.join(__dirname, "google645d416ebe2aa1bf.html"));
-  });
-
-  // Serve frontend
+  // Serve frontend build (this will also serve google verification file automatically)
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-  // Fallback
+  // React fallback route
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
   });
