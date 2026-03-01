@@ -12,11 +12,9 @@ import chatRoutes from "./routes/chat.route.js";
 const app = express();
 const PORT = process.env.PORT;
 
-// Proper __dirname for ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Middlewares
 app.use(cors({
   origin: "http://localhost:5173",
   credentials: true
@@ -25,20 +23,17 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-// API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/chat", chatRoutes);
 
-// ✅ Production Setup
 if (process.env.NODE_ENV === "production") {
 
-  // Serve frontend build (this will also serve google verification file automatically)
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+  // ✅ Correct dist path
+  app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 
-  // React fallback route
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+    res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
   });
 }
 
