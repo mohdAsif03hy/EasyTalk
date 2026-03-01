@@ -12,14 +12,9 @@ import chatRoutes from "./routes/chat.route.js";
 const app = express();
 const PORT = process.env.PORT;
 
-// ✅ Proper __dirname for ES Modules
+// Proper __dirname for ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// ✅ Google Verification Route
-app.get("/google645d416ebe2aa1bf.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "google645d416ebe2aa1bf.html"));
-});
 
 // Middlewares
 app.use(cors({
@@ -30,15 +25,23 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
-// Routes
+// API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/chat", chatRoutes);
 
-// ✅ Production Frontend Serve
+// ✅ Production Setup
 if (process.env.NODE_ENV === "production") {
+
+  // 👇 Google verification FIRST
+  app.get("/google645d416ebe2aa1bf.html", (req, res) => {
+    res.sendFile(path.join(__dirname, "google645d416ebe2aa1bf.html"));
+  });
+
+  // Serve frontend
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
+  // Fallback
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
   });
